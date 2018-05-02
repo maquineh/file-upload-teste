@@ -29,7 +29,7 @@ public class LocalStorageFileUpload implements FileUploadHandler {
 
 		// Sai logo, se não houve arquivo na requisicao:
 		if (request == null) {
-			throw new FileUploadException(new ServiceError("missingFile", "Não há arquivo"),
+			throw new FileUploadException(new ServiceError("missingFile", "Nao ha arquivo"),
 					String.format("Missing Parameter: request"));
 		}
 
@@ -38,7 +38,7 @@ public class LocalStorageFileUpload implements FileUploadHandler {
 
 		// Sai logo se o dado nao estiver assinado.
 		if (httpFile == null) {
-			throw new FileUploadException(new ServiceError("missingFile", "Não há arquivo."),
+			throw new FileUploadException(new ServiceError("missingFile", "Nao ha arquivo."),
 					String.format("Falta o parametro: request.httpFile"));
 		}
 
