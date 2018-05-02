@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import br.com.teste.vimeo.vimeo.error.ServiceError;
 import br.com.teste.vimeo.vimeo.exceptions.FileUploadException;
@@ -14,6 +15,7 @@ import br.com.teste.vimeo.vimeo.model.FileUploadResponse;
 import br.com.teste.vimeo.vimeo.model.HttpFile;
 import br.com.teste.vimeo.vimeo.provider.RootPathProvider;
 
+@Component
 public class LocalStorageFileUpload implements FileUploadHandler {
 
 	private final RootPathProvider rootPathProvider;
