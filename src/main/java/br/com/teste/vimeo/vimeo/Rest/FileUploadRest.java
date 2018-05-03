@@ -31,17 +31,18 @@ public class FileUploadRest {
 
 	@POST
 	@Path("/upload")
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response upload(@FormDataParam("titulo") String title, @FormDataParam("descricao") String description,
-			@FormDataParam("arquivo") InputStream stream, @FormDataParam("arquivo") FormDataContentDisposition file) {
+	@Consumes(MediaType.MULTIPART_FORM_DATA+";charset=UTF-8")
+	@Produces(MediaType.APPLICATION_JSON+";charset=UTF-8")
+	//@Async
+	public Response upload(@FormDataParam("titulo") String titulo, @FormDataParam("descricao") String descricao,
+			@FormDataParam("arquivo") InputStream stream, @FormDataParam("arquivo") FormDataContentDisposition arquivo) {
 
 		// cria o HttpFile
-		HttpFile httpFile = new HttpFile(file.getName(), file.getFileName(), file.getSize(), file.getParameters(),
+		HttpFile httpFile = new HttpFile(arquivo.getName(), arquivo.getFileName(), arquivo.getSize(), arquivo.getParameters(),
 				stream);
 
 		// Cria o FileUploadRequest
-		FileUploadRequest fileUploadRequest = new FileUploadRequest(title, description, httpFile);
+		FileUploadRequest fileUploadRequest = new FileUploadRequest(titulo, descricao, httpFile);
 
 		// Recebe o File Upload no response
 		FileUploadResponse fileUploadResponse = fileUploadHandler.handle(fileUploadRequest);
