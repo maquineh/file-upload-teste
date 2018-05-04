@@ -1,9 +1,9 @@
 package br.com.teste.vimeo.vimeo.handler;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
@@ -40,12 +40,12 @@ public class VimeoFileUpload implements FileUploadHandler {
 		Vimeo vimeo = new Vimeo(vimeoToken);
 
 		// add a video
-		boolean upgradeTo1080 = true;
+		boolean upgradeTo1080 = false;
 		String videoEndPoint;
 		
 		// Sai logo, se não houve arquivo na requisicao:
 		if (request == null) {
-			throw new FileUploadException(new ServiceError("missingFile", "Nao ha arquivo"),
+			throw new FileUploadException(new ServiceError("missingFile", "Nao ha arquivo."),
 					String.format("Missing Parameter: request"));
 		}
 
@@ -66,27 +66,33 @@ public class VimeoFileUpload implements FileUploadHandler {
 		
 
 		try {
-			/*videoEndPoint = vimeo.addVideo(Paths.get(rootPathProvider.getRootPath(), targetFileName).toFile(), upgradeTo1080);
+			long tempoInicial = System.currentTimeMillis();
+			videoEndPoint = vimeo.addVideo(Paths.get(rootPathProvider.getRootPath(), targetFileName).toFile(), upgradeTo1080);
+			long tempoFinal = System.currentTimeMillis();
+			 System.out.printf("%.3f ms%n", (tempoFinal - tempoInicial) / 1000d);
 			// get video info
 			VimeoResponse info = vimeo.getVideoInfo(videoEndPoint);
-			System.out.println(info);
+			//System.out.println(info);
 
 			// edit video
 			String name = httpFile.getNome();
 			String desc = httpFile.getNomeArquivoSubmetido();
 			String license = ""; // see Vimeo API Documentation
 			String privacyView = "disable"; // see Vimeo API Documentation
-			String privacyEmbed = "whitelist"; // see Vimeo API Documentation
+			String privacyEmbed = "privacy"; // see Vimeo API Documentation
 			boolean reviewLink = false;
 			vimeo.updateVideoMetadata(videoEndPoint, name, desc, license, privacyView, privacyEmbed, reviewLink);
 
 			// add video privacy domain
-			//vimeo.addVideoPrivacyDomain(videoEndPoint, "alltismapptest.com.br");
+			vimeo.addVideoPrivacyDomain(videoEndPoint, "alltismapptest.com.br");
 
-			// delete video */
-			vimeo.removeVideo("/videos/267910684");
+			// delete video
+			//vimeo.removeVideo(videoEndPoint);
+			Path caminhoDoArquivo = Paths.get(rootPathProvider.getRootPath(), targetFileName);
+			Files.delete(caminhoDoArquivo);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (VimeoException e) {
 			e.printStackTrace();
 		}
 
