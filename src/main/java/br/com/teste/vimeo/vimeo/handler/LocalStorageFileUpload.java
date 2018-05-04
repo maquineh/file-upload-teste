@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -60,6 +61,18 @@ public class LocalStorageFileUpload implements FileUploadHandler {
 			throw new FileUploadException(new ServiceError("storingFileError", "Erro ao adicionar arquivo"),
 					String.format("Adicionado o arquivo '%s' falhou", fileName), e);
 		}
+	}
+
+	@Override
+	public CompletableFuture<FileUploadResponse> handleAsync(FileUploadRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteVideo(String id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

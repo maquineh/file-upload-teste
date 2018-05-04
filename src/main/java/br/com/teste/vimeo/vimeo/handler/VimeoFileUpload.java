@@ -6,9 +6,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.clickntap.vimeo.Vimeo;
@@ -34,14 +36,15 @@ public class VimeoFileUpload implements FileUploadHandler {
 		this.rootPathProvider = rootPathProvider;
 	}
 
-	public FileUploadResponse handle(FileUploadRequest request) {
+	@Async
+	public CompletableFuture<FileUploadResponse> handleAsync(FileUploadRequest request) {
 		
 		String vimeoToken = "a3ac62d5dd556c1d7cb4010485d9ba23";
 		Vimeo vimeo = new Vimeo(vimeoToken);
 
 		// add a video
 		boolean upgradeTo1080 = false;
-		String videoEndPoint;
+		String videoEndPoint = "";
 		
 		// Sai logo, se não houve arquivo na requisicao:
 		if (request == null) {
@@ -95,8 +98,14 @@ public class VimeoFileUpload implements FileUploadHandler {
 		} catch (VimeoException e) {
 			e.printStackTrace();
 		}
-
-		return null;
+		
+		return CompletableFuture.completedFuture(new FileUploadResponse(videoEndPoint));
+	}
+	
+	public void deleteVideo(String id) throws IOException {
+		String vimeoToken = "a3ac62d5dd556c1d7cb4010485d9ba23";
+		Vimeo vimeo = new Vimeo(vimeoToken);
+		vimeo.removeVideo("/videos/"+id);
 	}
 	
 	private void internalWriteFile(InputStream stream, String fileName) {
@@ -106,6 +115,12 @@ public class VimeoFileUpload implements FileUploadHandler {
 			throw new FileUploadException(new ServiceError("storingFileError", "Erro ao adicionar arquivo"),
 					String.format("Adicionado o arquivo '%s' falhou", fileName), e);
 		}
+	}
+
+	@Override
+	public FileUploadResponse handle(FileUploadRequest request) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

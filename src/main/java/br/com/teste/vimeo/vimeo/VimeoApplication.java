@@ -5,6 +5,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import br.com.teste.vimeo.vimeo.provider.RootPathProvider;
 import br.com.teste.vimeo.vimeo.provider.RootPathProviderImpl;
