@@ -1,5 +1,6 @@
 package br.com.teste.vimeo.vimeo.handler;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -8,6 +9,8 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.clickntap.vimeo.VimeoResponse;
 
 import br.com.teste.vimeo.vimeo.error.ServiceError;
 import br.com.teste.vimeo.vimeo.exceptions.FileUploadException;
@@ -64,15 +67,17 @@ public class LocalStorageFileUpload implements FileUploadHandler {
 	}
 
 	@Override
-	public CompletableFuture<FileUploadResponse> handleAsync(FileUploadRequest request) {
-		// TODO Auto-generated method stub
+	public void deleteVideo(String id) {}
+
+	@Override
+	public VimeoResponse getVideo(String id) throws IOException {
 		return null;
 	}
 
 	@Override
-	public void deleteVideo(String id) {
+	public FileUploadResponse handleAsync(FileUploadRequest request) {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 }

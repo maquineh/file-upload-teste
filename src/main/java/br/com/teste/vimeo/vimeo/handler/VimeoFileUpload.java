@@ -10,7 +10,6 @@ import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.clickntap.vimeo.Vimeo;
@@ -36,8 +35,7 @@ public class VimeoFileUpload implements FileUploadHandler {
 		this.rootPathProvider = rootPathProvider;
 	}
 
-	@Async
-	public CompletableFuture<FileUploadResponse> handleAsync(FileUploadRequest request) {
+	public FileUploadResponse handleAsync(FileUploadRequest request) {
 		
 		String vimeoToken = "a3ac62d5dd556c1d7cb4010485d9ba23";
 		Vimeo vimeo = new Vimeo(vimeoToken);
@@ -99,13 +97,22 @@ public class VimeoFileUpload implements FileUploadHandler {
 			e.printStackTrace();
 		}
 		
-		return CompletableFuture.completedFuture(new FileUploadResponse(videoEndPoint));
+		String[] retorno = videoEndPoint.split("/");
+		
+		return new FileUploadResponse(retorno[2]);
 	}
 	
 	public void deleteVideo(String id) throws IOException {
 		String vimeoToken = "a3ac62d5dd556c1d7cb4010485d9ba23";
 		Vimeo vimeo = new Vimeo(vimeoToken);
 		vimeo.removeVideo("/videos/"+id);
+	}
+	
+	public VimeoResponse getVideo(String id) throws IOException{
+		String vimeoToken = "a3ac62d5dd556c1d7cb4010485d9ba23";
+		Vimeo vimeo = new Vimeo(vimeoToken);
+		VimeoResponse response = vimeo.get("/videos/"+id);
+		return response;
 	}
 	
 	private void internalWriteFile(InputStream stream, String fileName) {
